@@ -1,0 +1,17 @@
+PFont font1,font2;
+void setup() {
+  size(480, 480);
+  
+  
+}
+void draw() {
+  background(102);
+  fill(0);
+  font1 = loadFont("SansSerif-48.vlw");
+  textFont(font1);
+  text("Atharv", 26, 30, 240, 100);
+  fill(255,0,0);
+  font2 = loadFont("Serif-48.vlw");
+  textFont(font2);
+  text("Atharv",26,70,240, 100);
+}

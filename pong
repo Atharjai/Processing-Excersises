@@ -1,0 +1,355 @@
+//ball
+int x;
+int y;
+int w;
+int h;
+int speedX;
+int speedY;
+//paddles
+int paddleX;
+int paddleY;
+int paddleW;
+int paddleH;
+int paddleS;
+int lives = 3;
+int paddleXR;
+int paddleYR;
+int scoreL = 0;
+int scoreR = 0;
+
+int sec = 0;
+int min = 0;
+
+boolean up;
+boolean down;
+boolean upR;
+boolean downR;
+boolean onePlayer = false;
+boolean twoPlayer = false;
+
+color colorL = color (255,0,0);
+color colorR = color(0,0,255);
+
+void setup()
+{
+  size (500,500);
+  background(0);
+  
+  x = width/2;
+  y = height/2;
+  w = 10;
+  h = 10;
+  speedX = 3;
+  speedY = 2;
+  
+  rectMode(CENTER);
+  paddleX = 0;
+  paddleY = height/2;
+  paddleW = 10;
+  paddleH = 50;
+  paddleS = 10;
+  
+  paddleXR = width-paddleX;
+  paddleYR = height/2;
+textAlign(CENTER); 
+text("PONG", width/2, height/2);
+textAlign(CENTER);
+text("Press 1 for 1 player and 2 for 2 players", width/2, height/2 +30);
+}
+
+void draw()
+{ 
+  if(onePlayer)
+  {
+    twoPlayer=false;
+    playerOne();
+  }
+ 
+ else if(twoPlayer)
+  {
+    onePlayer=false;
+    playerTwo();
+  }
+  
+}
+
+void keyPressed()
+{
+  if(keyCode == UP)
+  {
+    upR = true;
+  }
+  if(keyCode == DOWN)
+  {
+    downR = true;
+  }
+  if(key == 'w'||key == 'W')
+  {
+    up = true;
+  }
+  if(key == 's'||key == 'S')
+  {
+    down = true;
+  }
+  if(key == 'r') //to restart
+  {
+    lives = 3;
+    onePlayer = false;
+    twoPlayer = false;
+    scoreL = 0;
+    scoreR = 0;
+    sec = 0;
+    setup();
+  }
+  if(key == '1')
+  {
+    onePlayer = true;
+  }
+  if (key == '2')
+  {
+    twoPlayer = true;
+  }
+}
+
+void keyReleased()
+{
+  if(keyCode == UP)
+  {
+    upR = false;
+  }
+  if(keyCode == DOWN)
+  {
+    downR = false;
+  }
+  if(key == 'w'||key == 'W')
+  {
+    up = false;
+  }
+  if(key == 's'||key == 'S')
+  {
+    down = false;
+  }
+}
+
+void playerOne()
+{
+  background(0);
+  ellipse(x,y,w,h);
+  rect(paddleX, paddleY,paddleW, paddleH);
+  
+  if(x > width - w/2)
+  {
+    speedX *= -1;
+  }
+  
+  else if(x<0 + w/2)
+  {
+    speedX *= -1;
+    setup();
+    lives -=1 ;
+  }
+  
+  if(y > height - h/2)
+  {
+     speedY *= -1;
+  }
+  
+  else if(y < 0 + h/2)
+  {
+     speedY *= -1;
+  }
+  
+  x += speedX;
+  y += speedY;
+  
+  if (up) //moves paddle up
+  {
+    paddleY -= paddleS;
+  }
+  if (down) //moves paddle down
+  {
+    paddleY += paddleS;
+  }
+  
+  if(paddleY - paddleH/2 < 0) //makes sure paddle doesn't move past top
+  {
+    paddleY += paddleS;
+  }
+  if(paddleY + paddleH/2 > height) //makes sure the paddle doesn't move past bottom
+  {
+    paddleY -= paddleS;
+  }
+  
+  if(x - w/2 < paddleX + paddleW/2 && y - h/2 < paddleY + paddleH/2 && y + h/2 > paddleY - paddleH/2) //makes the ball bounce off the paddle
+  {
+    if(speedX < 0)
+    {
+      speedX *= -1;
+    }
+  }
+  
+  fill(255);
+  textAlign(CENTER);
+  text("lives: " + lives, width/2, 30);
+  if(sec <= 10000 && lives !=0)
+  {
+    textAlign(CENTER);
+    text(sec/100, width/2, 40);
+    sec++;
+  }
+  if(lives == 0)
+  {
+    speedX = 0;
+    speedY = 0;
+    textAlign(CENTER);
+    text("GAME OVER", width/2,50);
+    sec += 0;
+  }
+  
+  
+}
+
+void playerTwo()
+{
+  background(0);
+  ellipse(x,y,w,h);
+  fill (colorL);
+  rect(paddleX, paddleY,paddleW, paddleH);
+  fill (colorR);
+  rect(paddleXR, paddleYR, paddleW, paddleH);
+  fill(255);
+  textSize(15);
+  text(scoreL, 100 , 50);
+  text(scoreR , width-100, 50);
+  if(x > width - w/2)
+  {
+   size (500,500);
+    background(0);
+  
+    x = width/2;
+    y = height/2;
+    w = 10;
+    h = 10;
+    speedX = -3;
+    speedY = 2;
+  
+    rectMode(CENTER);
+    paddleX = 0;
+    paddleY = height/2;
+    paddleW = 10;
+    paddleH = 50;
+    paddleS = 10;
+  
+    paddleXR = width-paddleX;
+    paddleYR = height/2;
+  
+    background(0);
+    ellipse(x,y,w,h);
+    fill (colorL);
+    rect(paddleX, paddleY,paddleW, paddleH);
+    fill (colorR);
+    rect(paddleXR, paddleYR, paddleW, paddleH);
+    fill(255);
+    
+    speedX *= -1;
+    scoreL++;
+  }
+  
+  else if(x<0 + w/2)
+  {
+    
+    size (500,500);
+    background(0);
+  
+    x = width/2;
+    y = height/2;
+    w = 10;
+    h = 10;
+    speedX = 3;
+    speedY = 2;
+  
+    rectMode(CENTER);
+    paddleX = 0;
+    paddleY = height/2;
+    paddleW = 10;
+    paddleH = 50;
+    paddleS = 10;
+  
+    paddleXR = width-paddleX;
+    paddleYR = height/2;
+   
+    background(0);
+    ellipse(x,y,w,h);
+    fill (colorL);
+    rect(paddleX, paddleY,paddleW, paddleH);
+    fill (colorR);
+    rect(paddleXR, paddleYR, paddleW, paddleH);
+    fill(255);
+    
+    speedX *= -1;
+    scoreR++;
+  }
+  
+  if(y > height - h/2)
+  {
+     speedY *= -1;
+  }
+  
+  else if(y < 0 + h/2)
+  {
+     speedY *= -1;
+  }
+  
+  x += speedX;
+  y += speedY;
+  
+  if (up) //moves paddle up
+  {
+    paddleY -= paddleS;
+  }
+  if (down) //moves paddle down
+  {
+    paddleY += paddleS;
+  }
+  if (upR) //moves paddle up (right paddle)
+  {
+    paddleYR -= paddleS;
+  }
+  if (downR) //moves paddle down (right paddle)
+  {
+    paddleYR += paddleS;
+  }
+  
+  if(paddleY - paddleH/2 < 0) //makes sure paddle doesn't move past top
+  {
+    paddleY += paddleS;
+  }
+  if(paddleY + paddleH/2 > height) //makes sure the paddle doesn't move past bottom
+  {
+    paddleY -= paddleS;
+  }
+  
+  if(paddleYR - paddleH/2 < 0) //makes sure paddle doesn't move past top
+  {
+    paddleYR += paddleS;
+  }
+  if(paddleYR + paddleH/2 > height) //makes sure the paddle doesn't move past bottom
+  {
+    paddleYR -= paddleS;
+  }
+  
+  if(x - w/2 < paddleX + paddleW/2 && y - h/2 < paddleY + paddleH/2 && y + h/2 > paddleY - paddleH/2) //makes the ball bounce off the paddle
+  {
+    if(speedX < 0)
+    {
+      speedX *= -1;
+    }
+  }
+  else if(x + w/2 > paddleXR - paddleW/2 && y - h/2 < paddleYR + paddleH/2 && y + h/2 > paddleYR - paddleH/2) //makes the ball bounce off the paddle
+  {
+    if(speedX > 0)
+    {
+      speedX *= -1;
+    }
+  }
+}

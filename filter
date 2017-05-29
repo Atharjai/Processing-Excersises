@@ -1,0 +1,126 @@
+PImage img;// Declare a variable of type PImage
+int r = 255;
+int g = 255;
+int b = 255;
+
+boolean gray = false;
+boolean turn = false;
+boolean scaleUp = false;
+boolean scaleDown = false;
+boolean normal = false;
+
+
+void setup() {
+  size(960,480);
+  // Make a new instance of a PImage by loading an image file
+  img = loadImage("car.jpg");
+}
+
+void draw() {
+  background(0);
+  tint(r,g,b);
+  if(turn)
+  {
+    translate(width/2, 0);
+    rotate(PI/2);
+  }
+  image(img,0,0);
+  if(gray)
+  {
+    filter(GRAY);
+  }
+  if(scaleUp)
+  {
+    img.resize(960,480);
+  }
+  if(scaleDown)
+  {
+    img.resize(240,120);
+  }
+  if(normal)
+  {
+    img.resize(480,240);
+  }
+  
+}
+
+void keyPressed()
+{
+  if(key == 'r')
+  {
+    r = 0;
+  }
+  
+  else if(key == 'g')
+  {
+    g = 0;
+  }
+  
+  else if(key == 'b')
+  {
+    b=0;
+  }
+  
+  else if(key == 't')
+  {
+    turn = true;
+  }
+  
+  else if(key == ' ')
+  {
+    gray = true;
+  }
+  
+  else if(keyCode == UP)
+  {
+    scaleUp = true;
+  }
+  
+  else if(keyCode == DOWN)
+  {
+    scaleDown = true;
+  }
+  
+  else if (key == 'n')
+  {
+    setup();
+  }
+}
+
+void keyReleased()
+{
+  if(key == 'r')
+  {
+    r = 255;
+  }
+  
+  else if(key == 'g')
+  {
+    g = 255;
+  }
+  
+  else if(key == 'b')
+  {
+    b=255;
+  }
+  
+  else if(key == 't')
+  {
+    turn = false;
+  }
+  
+  else if(key == ' ')
+  {
+    gray = false;
+  }
+  
+  else if(keyCode == UP)
+  {
+    scaleUp = false;
+  }
+  
+  else if(keyCode == DOWN)
+  {
+    scaleDown = false;
+  }
+}
